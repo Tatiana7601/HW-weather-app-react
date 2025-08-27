@@ -5,6 +5,7 @@ import Weather from "./Weather.jsx";
 const Data = () => {
     const [weather,setWeather] = useState(null);
 
+
     return (
         <div>
             <Form onWeatherLoaded={setWeather}/>

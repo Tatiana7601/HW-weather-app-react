@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
 
-const Form = ({onWeatherLoaded}) => {
+const Form = ({onWeatherLoaded, onCityChange}) => {
     const [city, setCity] = useState("");
     // eslint-disable-next-line no-undef
-    const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
+    const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
     const handleSearch = () => {
         if (!city) {
             alert("Please enter a city name!");
             return;
         }
+        onCityChange(city);
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
             .then(res => res.json())
             .then(data => {
