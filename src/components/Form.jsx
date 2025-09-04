@@ -1,48 +1,37 @@
 import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {setCity, fetchWeather } from "../actions/weatherActions.js";
 
-const Form = ({onWeatherLoaded}) => {
-    const [city, setCity] = useState("");
-    // eslint-disable-next-line no-undef
-    const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
+const Form = () => {
+    const dispatch = useDispatch();
+    const city = useSelector((state) => state.city);
+    const [cityInput, setCityInput] = useState("");
     const REFRESH_INTERVAL =120000;
 
-    const fetchWeather = () => {
-        if(!city) return;
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.cod === "404") {
-                    alert("City not found! Please check the spelling.");
-                    return;
-                }
-                onWeatherLoaded(data);
-            })
-            .catch(err => console.error("ERROR:", err));
-
-    };
-
     const handleSearch = () => {
-        if (!city) {
+        if (!cityInput) {
             alert("Please enter a city name!");
             return;
         }
-        fetchWeather();
+        dispatch(setCity(cityInput));
+        dispatch(fetchWeather(cityInput));
     };
+
 
     useEffect(() =>{
         if (!city) return;
         const interval = setInterval(() =>{
-            fetchWeather()
+            dispatch(fetchWeather(city));
         }, REFRESH_INTERVAL);
         return () => clearInterval(interval);
-        },[city]);
+        },[city,dispatch]);
 
     return (
         <div>
             <input type="text"
                    placeholder="Please enter your сity"
                    value={city}
-                   onChange={(e) => setCity(e.target.value)}
+                   onChange={(e) => setCityInput(e.target.value)}
             />
 
             <button onClick={handleSearch}>Search</button>

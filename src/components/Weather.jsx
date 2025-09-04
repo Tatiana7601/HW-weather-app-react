@@ -1,6 +1,13 @@
 import React from 'react';
+import {useSelector} from "react-redux";
 
-const Weather = ({ weather }) => {
+const Weather = () => {
+    const {weather,error} = useSelector((state) => state);
+
+    if (error) {
+        return <p style={{color: "red"}}>{error}</p>;
+    }
+
     if (!weather){
         return <p> Loading... </p>
     }
