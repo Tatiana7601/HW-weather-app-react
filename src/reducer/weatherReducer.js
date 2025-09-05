@@ -13,7 +13,7 @@ export const weatherReducer = (state = initialState, action) => {
             return { ...state, city: action.payload };
 
         case SET_WEATHER:
-            return { ...state, weather: action.payload, error: null };
+            return { ...state, weather: action.payload };
 
         case SET_ERROR:
             return { ...state, error: action.payload };
